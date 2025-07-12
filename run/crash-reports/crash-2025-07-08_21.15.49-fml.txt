@@ -52,7 +52,7 @@ Details:
 Stacktrace:
 	at java.util.Objects.requireNonNull(Objects.java:334) ~[?:?] {}
 	at net.minecraftforge.registries.RegistryObject.get(RegistryObject.java:204) ~[forge-1.20.1-47.4.3_mapped_official_1.20.1.jar%23190%23197!/:?] {re:classloading}
-	at com.meteorite.mod.portableInventory.client.ClientEvents.register(ClientEvents.java:24) ~[%23196!/:?] {re:classloading}
+	at com.meteorite.mod.portableInventory.client.ClientForgeEvents.register(ClientEvents.java:24) ~[%23196!/:?] {re:classloading}
 	at net.minecraftforge.fml.DistExecutor.safeRunWhenOn(DistExecutor.java:123) ~[fmlcore-1.20.1-47.4.3.jar%23195!/:?] {}
 	at com.meteorite.mod.portableInventory.PortableInventoryMod.<init>(PortableGridMod.java:22) ~[%23196!/:?] {re:classloading}
 	at jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:?] {}

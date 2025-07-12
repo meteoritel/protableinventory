@@ -45,10 +45,10 @@ Stacktrace:
 Details:
 	Mod File: /D:/system_default/desktop/java_project/ProtableGrid/build/resources/main/
 	Failure message: Portable Grid (portableinventory) has failed to load correctly
-		java.lang.IllegalArgumentException: Method public static void com.meteorite.mod.portableInventory.client.ClientEvents.onScreenInit(net.minecraftforge.client.event.ScreenEvent$Init$Post) has @SubscribeEvent annotation, but takes an argument that is not a subtype of the base type interface net.minecraftforge.fml.event.IModBusEvent: class net.minecraftforge.client.event.ScreenEvent$Init$Post
+		java.lang.IllegalArgumentException: Method public static void com.meteorite.mod.portableInventory.client.ClientForgeEvents.onScreenInit(net.minecraftforge.client.event.ScreenEvent$Init$Post) has @SubscribeEvent annotation, but takes an argument that is not a subtype of the base type interface net.minecraftforge.fml.event.IModBusEvent: class net.minecraftforge.client.event.ScreenEvent$Init$Post
 	Mod Version: 1.0.0
 	Mod Issue URL: NOT PROVIDED
-	Exception message: java.lang.IllegalArgumentException: Method public static void com.meteorite.mod.portableInventory.client.ClientEvents.onScreenInit(net.minecraftforge.client.event.ScreenEvent$Init$Post) has @SubscribeEvent annotation, but takes an argument that is not a subtype of the base type interface net.minecraftforge.fml.event.IModBusEvent: class net.minecraftforge.client.event.ScreenEvent$Init$Post
+	Exception message: java.lang.IllegalArgumentException: Method public static void com.meteorite.mod.portableInventory.client.ClientForgeEvents.onScreenInit(net.minecraftforge.client.event.ScreenEvent$Init$Post) has @SubscribeEvent annotation, but takes an argument that is not a subtype of the base type interface net.minecraftforge.fml.event.IModBusEvent: class net.minecraftforge.client.event.ScreenEvent$Init$Post
 Stacktrace:
 	at net.minecraftforge.eventbus.EventBus.registerListener(EventBus.java:153) ~[eventbus-6.0.5.jar%23114!/:?] {}
 	at net.minecraftforge.eventbus.EventBus.lambda$registerClass$2(EventBus.java:86) ~[eventbus-6.0.5.jar%23114!/:?] {}

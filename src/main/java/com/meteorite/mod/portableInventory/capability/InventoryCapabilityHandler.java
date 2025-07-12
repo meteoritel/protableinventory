@@ -10,11 +10,21 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 
 @Mod.EventBusSubscriber
-public class InventoryCapabilityHandler extends ItemStackHandler {
+public class InventoryCapabilityHandler extends ItemStackHandler implements IPortableHandler{
     public static final int SIZE = 9;
 
     public InventoryCapabilityHandler() {
         super(SIZE);
+    }
+
+    @Override
+    public int getSize() {
+        return SIZE;
+    }
+
+    @Override
+    public boolean isPortableSlot(int slot){
+        return slot >= 0 && slot <SIZE;
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.meteorite.mod.portableInventory.menu;
 
+import com.meteorite.mod.portableInventory.capability.IPortableHandler;
+import com.meteorite.mod.portableInventory.capability.InventoryCapabilityProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,24 +24,21 @@ public class PortableInventoryMenu extends AbstractContainerMenu {
         this.player = playerInventory.player;
         this.access = access;
 
-        IItemHandler personalInventory = player.getCapability(ForgeCapabilities.ITEM_HANDLER).
-                orElseThrow(() -> new IllegalStateException("Player doesn't have personal storage capability"));
+        IPortableHandler portableInventory = player.getCapability(InventoryCapabilityProvider.PORTABLE_INVENTORY_CAP).
+                orElseThrow(() -> new IllegalStateException("ERROR, NO PORTABLE INVENTORY!"));
 
-        // 添加3×3存储槽位 (类似发射器布局)
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                this.addSlot(new SlotItemHandler(personalInventory, col + row * 3, 62 + col * 18, 17 + row * 18));
+                this.addSlot(new SlotItemHandler(portableInventory, col + row * 3, 62 + col * 18, 17 + row * 18));
             }
         }
 
-        // 添加玩家物品栏槽位 (3×9)
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
             }
         }
 
-        // 添加玩家快捷栏槽位 (1×9)
         for (int col = 0; col < 9; col++) {
             this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
         }

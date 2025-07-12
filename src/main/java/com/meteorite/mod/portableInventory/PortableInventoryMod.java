@@ -1,7 +1,7 @@
 package com.meteorite.mod.portableInventory;
 
 import com.meteorite.mod.portableInventory.capability.InventoryCapabilityHandler;
-import com.meteorite.mod.portableInventory.client.ClientEvents;
+import com.meteorite.mod.portableInventory.client.ClientForgeEvents;
 import com.meteorite.mod.portableInventory.menu.MenuInit;
 import com.meteorite.mod.portableInventory.network.NetworkHandler;
 
@@ -30,7 +30,7 @@ public class PortableInventoryMod {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
 
-        MinecraftForge.EVENT_BUS.register(new ClientEvents());
+        //MinecraftForge.EVENT_BUS.register(new ClientForgeEvents());
         MinecraftForge.EVENT_BUS.register(new InventoryCapabilityHandler());
 
     }

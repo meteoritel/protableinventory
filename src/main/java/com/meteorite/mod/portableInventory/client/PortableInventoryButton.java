@@ -17,13 +17,13 @@ public class PortableInventoryButton extends ImageButton {
             new ResourceLocation(PortableInventoryMod.MODID, "textures/gui/button.png");
 
     private static final int BUTTON_WIDTH = 20;
-    private static final int BUTTON_HEIGHT = 20;
+    private static final int BUTTON_HEIGHT = 18;
     private static final int TEXTURE_WIDTH = 256;
     private static final int TEXTURE_HEIGHT = 256;
     private static final int NORMAL_U = 0;
     private static final int NORMAL_V = 0;
     private static final int HOVER_U = 0;
-    private static final int HOVER_V = 22;
+    private static final int HOVER_V = 19;
 
     private final RecipeBookComponent recipeBook;
     private final InventoryScreen parentScreen;
@@ -40,16 +40,19 @@ public class PortableInventoryButton extends ImageButton {
         this.parentScreen = parentScreen;
         this.recipeBook = recipeBook;
         this.wasRecipeBookVisible = recipeBook.isVisible();
+        this.visible = !recipeBook.isVisible();
     }
 
     // 绘制按钮
     @Override
     public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        boolean isRecipeBookVisible = recipeBook.isVisible();
-        if (isRecipeBookVisible != wasRecipeBookVisible) {
-            this.visible = !isRecipeBookVisible;
-            wasRecipeBookVisible = isRecipeBookVisible;
-        }
+
+//        boolean isRecipeBookVisible = recipeBook.isVisible();
+//        if (isRecipeBookVisible != wasRecipeBookVisible) {
+//            this.visible = !isRecipeBookVisible;
+//            wasRecipeBookVisible = isRecipeBookVisible;
+//        }
+        this.visible = !recipeBook.isVisible();
 
         if (this.visible) {
             int u = this.isHoveredOrFocused() ? HOVER_U : NORMAL_U;
@@ -59,7 +62,6 @@ public class PortableInventoryButton extends ImageButton {
                 this.renderTooltip(guiGraphics, mouseX, mouseY);
             }
         }
-
     }
 
     public void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -69,8 +71,6 @@ public class PortableInventoryButton extends ImageButton {
                     mouseX, mouseY);
         }
     }
-
-
 }
 
 

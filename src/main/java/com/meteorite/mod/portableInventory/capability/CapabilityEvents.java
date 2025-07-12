@@ -1,25 +1,20 @@
-package com.meteorite.mod.portableInventory.events;
+package com.meteorite.mod.portableInventory.capability;
 
-import com.meteorite.mod.portableInventory.capability.InventoryCapabilityHandler;
-import com.meteorite.mod.portableInventory.capability.InventoryCapabilityProvider;
 import com.meteorite.mod.portableInventory.screen.PortableInventoryScreen;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.items.IItemHandler;
-
 
 @Mod.EventBusSubscriber
 public class CapabilityEvents {
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(IItemHandler.class);
+        event.register(IPortableHandler.class);
     }
 
     @SubscribeEvent
@@ -34,11 +29,12 @@ public class CapabilityEvents {
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if(event.isWasDeath()) {
             event.getOriginal().reviveCaps();
-            event.getOriginal().getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(oldCap -> {
-                event.getEntity().getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(newCap -> {
-                    ((InventoryCapabilityHandler) newCap).deserializeNBT(
-                            ((InventoryCapabilityHandler) oldCap).serializeNBT()
-                    );
+            event.getOriginal().getCapability(InventoryCapabilityProvider.PORTABLE_INVENTORY_CAP).ifPresent(oldCap -> {
+                event.getEntity().getCapability(InventoryCapabilityProvider.PORTABLE_INVENTORY_CAP).ifPresent(newCap -> {
+                    if (newCap instanceof InventoryCapabilityHandler newHandler &&
+                            oldCap instanceof InventoryCapabilityHandler oldHandler) {
+                        newHandler.deserializeNBT(oldHandler.serializeNBT());
+                    }
                 });
             });
             event.getOriginal().invalidateCaps();
