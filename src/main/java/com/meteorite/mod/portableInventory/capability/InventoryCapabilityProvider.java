@@ -9,8 +9,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-
-
 public class InventoryCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
     public static final Capability<IPortableHandler> PORTABLE_INVENTORY_CAP = CapabilityManager.get(new CapabilityToken<>(){});

@@ -6,7 +6,7 @@ license = "MIT"
 [[mods]] #mandatory
 modId = "portableinventory" #mandatory
 version = "1.0.0" #mandatory
-displayName = "Portable Grid" #mandatory
+displayName = "Portable Inventory" #mandatory
 authors = "Meteorite" #optional
 description = "A simple inventory for you"
 
@@ -23,3 +23,6 @@ mandatory = true
 versionRange = "[1.20.1,1.20.2)"
 ordering = "NONE"
 side = "BOTH"
+
+[[mixins]]
+config = "portableinventory.mixins.json"

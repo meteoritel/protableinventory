@@ -6,8 +6,6 @@ import com.meteorite.mod.portableInventory.network.OpenScreenPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -25,34 +23,22 @@ public class PortableInventoryButton extends ImageButton {
     private static final int HOVER_U = 0;
     private static final int HOVER_V = 19;
 
-    private final RecipeBookComponent recipeBook;
-    private final InventoryScreen parentScreen;
-    private boolean wasRecipeBookVisible;
+    //private final InventoryScreen parentScreen;
 
-    public PortableInventoryButton(InventoryScreen parentScreen, RecipeBookComponent recipeBook, int x, int y) {
+    public PortableInventoryButton(int x, int y) {
         super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT,
                 NORMAL_U, NORMAL_V, HOVER_V - NORMAL_V,
                 BUTTON_TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT,
                 button -> {
                     NetworkHandler.CHANNEL.sendToServer(new OpenScreenPacket());
                 },
-                Component.translatable("gui." + PortableInventoryMod.MODID + ".personal_inventory"));
-        this.parentScreen = parentScreen;
-        this.recipeBook = recipeBook;
-        this.wasRecipeBookVisible = recipeBook.isVisible();
-        this.visible = !recipeBook.isVisible();
+                Component.translatable("gui." + PortableInventoryMod.MODID + ".portable_inventory"));
+        this.visible = true;
     }
 
     // 绘制按钮
     @Override
     public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-
-//        boolean isRecipeBookVisible = recipeBook.isVisible();
-//        if (isRecipeBookVisible != wasRecipeBookVisible) {
-//            this.visible = !isRecipeBookVisible;
-//            wasRecipeBookVisible = isRecipeBookVisible;
-//        }
-        this.visible = !recipeBook.isVisible();
 
         if (this.visible) {
             int u = this.isHoveredOrFocused() ? HOVER_U : NORMAL_U;

@@ -7,9 +7,9 @@ import org.lwjgl.glfw.GLFW;
 
 public class Keys {
     public static KeyMapping openKey = new KeyMapping(
-            "key.portablegrid.open",
+            "key.portableinventory.open",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_O,
-            "key.categories.portableInventory");
+            "key.categories.portableinventory");
 }

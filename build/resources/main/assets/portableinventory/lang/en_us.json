@@ -1,4 +1,7 @@
 {
-  "screen.portablegrid.title": "Portable Storage Grid",
-  "screen.portablegrid.open": "Open Portable Grid"
+  "key.categories.portableinventory": "Portable Inventory",
+  "key.portableinventory.open": "Open Portable Inventory",
+  "gui.portableinventory.portable_inventory": "Portable Inventory",
+  "gui.button.openInventory.tooltip": "Open Portable Inventory",
+  "gui.portableinventory.title": "Portable Inventory"
 }

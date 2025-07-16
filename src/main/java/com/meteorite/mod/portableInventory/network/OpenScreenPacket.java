@@ -24,7 +24,7 @@ public class OpenScreenPacket {
                 // 服务端打开菜单
                 NetworkHooks.openScreen(player, new SimpleMenuProvider(
                         (id, inventory, p) -> new PortableInventoryMenu(id, inventory),
-                        Component.translatable("key.portable.menu")
+                        Component.translatable("gui.portableinventory.title")
                 ));
             }
         });
