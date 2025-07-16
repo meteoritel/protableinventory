@@ -61,5 +61,4 @@ public class InventoryCapabilityHandler extends ItemStackHandler implements IPor
         return true;
     }
 
-
 }

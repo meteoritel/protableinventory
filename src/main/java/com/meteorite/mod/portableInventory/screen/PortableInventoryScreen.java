@@ -47,7 +47,4 @@ public class PortableInventoryScreen extends AbstractContainerScreen<PortableInv
         super.render(graphics, mouseX, mouseY, partialTick);
         this.renderTooltip(graphics, mouseX, mouseY);
     }
-
-
-
 }

@@ -1,13 +1,11 @@
 package com.meteorite.mod.portableInventory.util;
 
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraftforge.client.event.ScreenEvent;
 
-import java.util.List;
 
+// 暂时没有作用，未来可能增加的功能
 public class GuiButtonUtil {
 
     // 调整位置，防止按钮重叠
@@ -52,22 +50,5 @@ public class GuiButtonUtil {
         return new int[]{x, y};
     }
 
-//    /**
-//     * 检查目标区域是否与已有按钮重叠。
-//     */
-//    private static boolean isOverlapping(List<? extends GuiEventListener> widgets, int x, int y, int w, int h) {
-//        for (GuiEventListener listener : widgets) {
-//            if (listener instanceof AbstractWidget widget) {
-//                int wx = widget.getX();
-//                int wy = widget.getY();
-//                int ww = widget.getWidth();
-//                int wh = widget.getHeight();
-//
-//                boolean overlap = x < wx + ww && x + w > wx && y < wy + wh && y + h > wy;
-//                if (overlap) return true;
-//            }
-//        }
-//        return false;
-//    }
 
 }
