@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PortableInventoryButton extends ImageButton {
     private static final ResourceLocation BUTTON_TEXTURE =
-            new ResourceLocation(PortableInventoryMod.MODID, "textures/gui/button.png");
+            new ResourceLocation(PortableInventoryMod.MODID, "textures/gui/open_button.png");
 
     private static final int BUTTON_WIDTH = 20;
     private static final int BUTTON_HEIGHT = 18;
@@ -23,8 +23,6 @@ public class PortableInventoryButton extends ImageButton {
     private static final int HOVER_U = 0;
     private static final int HOVER_V = 19;
 
-    //private final InventoryScreen parentScreen;
-
     public PortableInventoryButton(int x, int y) {
         super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT,
                 NORMAL_U, NORMAL_V, HOVER_V - NORMAL_V,
@@ -32,7 +30,6 @@ public class PortableInventoryButton extends ImageButton {
                 button -> {
                     NetworkHandler.CHANNEL.sendToServer(new OpenScreenPacket());
                 }
-                //Component.translatable("gui." + PortableInventoryMod.MODID + ".portable_inventory")
         );
         this.visible = true;
     }

@@ -40,14 +40,18 @@ public abstract class InventoryScreenMixin extends Screen {
 
         int x = getButtonX(screen);
         int y = getButtonY(screen);
-
-        if (modButton == null) {
-            modButton = new PortableInventoryButton(x,y);
-            //this.renderables.add(modButton);
-            this.addRenderableWidget(modButton);
-        } else {
-            modButton.setPosition(x,y);
+        // 每次刷新都移除旧按钮，添加新按钮
+        if (modButton != null) {
+            this.removeWidget(modButton);
         }
+
+        modButton = new PortableInventoryButton(x,y);
+        this.addRenderableWidget(modButton);
+//        if (modButton == null) {
+//
+//        } else {
+//            modButton.setPosition(x,y);
+//        }
     }
 
     @Inject(method = "containerTick", at = @At("TAIL"))
