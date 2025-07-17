@@ -20,5 +20,9 @@ public class NetworkHandler {
                 OpenScreenPacket::encode,
                 OpenScreenPacket::new,
                 OpenScreenPacket::handle);
+        CHANNEL.registerMessage(id++, BackGuiPacket.class,
+                BackGuiPacket::encode,
+                BackGuiPacket::new,
+                BackGuiPacket::handle);
     }
 }

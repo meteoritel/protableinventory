@@ -40,6 +40,4 @@ public class CapabilityEvents {
             event.getOriginal().invalidateCaps();
         }
     }
-
-
 }

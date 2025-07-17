@@ -30,5 +30,4 @@ public class OpenScreenPacket {
         });
         ctx.get().setPacketHandled(true);
     }
-
 }
