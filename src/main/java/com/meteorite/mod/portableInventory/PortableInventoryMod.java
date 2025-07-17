@@ -1,9 +1,9 @@
 package com.meteorite.mod.portableInventory;
 
 import com.meteorite.mod.portableInventory.capability.InventoryCapabilityHandler;
+import com.meteorite.mod.portableInventory.client.Keys;
 import com.meteorite.mod.portableInventory.menu.MenuInit;
 import com.meteorite.mod.portableInventory.network.NetworkHandler;
-
 import com.meteorite.mod.portableInventory.screen.PortableInventoryScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,7 +30,6 @@ public class PortableInventoryMod {
         modEventBus.addListener(this::clientSetup);
 
         MinecraftForge.EVENT_BUS.register(new InventoryCapabilityHandler());
-
     }
     private void commonSetup(FMLCommonSetupEvent event) {
         // 初始化网络
@@ -43,5 +42,8 @@ public class PortableInventoryMod {
         event.enqueueWork(() -> {
             MenuScreens.register(MenuInit.PORTABLE_INVENTORY_MENU.get(), PortableInventoryScreen:: new);
         });
+        // 注册按键
+        event.enqueueWork(Keys::init);
+
     }
 }

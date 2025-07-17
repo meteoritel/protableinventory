@@ -1,7 +1,7 @@
 {
   "key.categories.portableinventory": "便携物品栏",
   "key.portableinventory.open": "打开便携物品栏",
-  "gui.portableinventory.portable_inventory": "便携物品栏",
+
   "gui.button.openInventory.tooltip": "打开便携物品栏",
   "gui.portableinventory.title": "便携物品栏"
 }

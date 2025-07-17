@@ -25,7 +25,7 @@ public class PortableInventoryScreen extends AbstractContainerScreen<PortableInv
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         // 绑定背景贴图
         RenderSystem.setShaderTexture(0, PORTABLE_INVENTORY_CAP);
-        // 计算贴图绘制位置
+        // 贴图居中显示
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         // 绘制 GUI 背景

@@ -31,8 +31,9 @@ public class PortableInventoryButton extends ImageButton {
                 BUTTON_TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT,
                 button -> {
                     NetworkHandler.CHANNEL.sendToServer(new OpenScreenPacket());
-                },
-                Component.translatable("gui." + PortableInventoryMod.MODID + ".portable_inventory"));
+                }
+                //Component.translatable("gui." + PortableInventoryMod.MODID + ".portable_inventory")
+        );
         this.visible = true;
     }
 

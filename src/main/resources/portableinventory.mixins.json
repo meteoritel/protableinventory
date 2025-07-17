@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.meteorite.mod.portableInventory.mixin",
   "compatibilityLevel": "JAVA_17",
+  "refmap": "portableinventory.refmap.json",
   "mixins": [
     "InventoryScreenAccessor",
     "InventoryScreenMixin"
