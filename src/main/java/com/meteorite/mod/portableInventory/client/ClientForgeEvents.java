@@ -3,10 +3,12 @@ package com.meteorite.mod.portableInventory.client;
 import com.meteorite.mod.portableInventory.PortableInventoryMod;
 import com.meteorite.mod.portableInventory.network.NetworkHandler;
 import com.meteorite.mod.portableInventory.network.OpenScreenPacket;
+import com.meteorite.mod.portableInventory.screen.PortableInventoryScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
@@ -37,12 +39,18 @@ public class ClientForgeEvents {
         }
     }
 
-//    //检测打开GUI
-//    @SubscribeEvent
-//    public static void onScreenInit(ScreenEvent.Init.Post event) {
-//
-//        if (event.getScreen() instanceof InventoryScreen inventoryScreen) {
-//            event.addListener(() -> new PortableInventoryButton());
-//        }
-//    }
+    //检测打开GUI
+    @SubscribeEvent
+    public static void onScreenInit(ScreenEvent.Init.Post event) {
+
+        if (event.getScreen() instanceof PortableInventoryScreen screen) {
+
+            int buttonX = screen.getGuiLeft() + 128;
+            int buttonY = screen.height / 2;
+
+            BackButton button = new BackButton(buttonX, buttonY);
+
+            event.addListener(button);
+        }
+    }
 }

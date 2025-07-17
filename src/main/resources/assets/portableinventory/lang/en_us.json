@@ -1,7 +1,7 @@
 {
   "key.categories.portableinventory": "Portable Inventory",
   "key.portableinventory.open": "Open Portable Inventory",
-
+  "gui.button.back.tooltip": "Back To Inventory",
   "gui.button.openInventory.tooltip": "Open Portable Inventory",
   "gui.portableinventory.title": "Portable Inventory"
 }
