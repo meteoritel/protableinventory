@@ -5,6 +5,8 @@ import com.meteorite.mod.portableInventory.network.NetworkHandler;
 import com.meteorite.mod.portableInventory.network.OpenScreenPacket;
 import com.meteorite.mod.portableInventory.screen.PortableInventoryScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -15,8 +17,6 @@ import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(modid = PortableInventoryMod.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientForgeEvents {
-
-    //private static boolean buttonAdded = false;
 
     //注册打开空间的快捷键
     @SubscribeEvent
@@ -39,18 +39,4 @@ public class ClientForgeEvents {
         }
     }
 
-//    //检测打开GUI
-//    @SubscribeEvent
-//    public static void onScreenInit(ScreenEvent.Init.Post event) {
-//
-//        if (event.getScreen() instanceof PortableInventoryScreen screen) {
-//
-//            int buttonX = screen.getGuiLeft() + 128;
-//            int buttonY = screen.height / 2;
-//
-//            BackButton button = new BackButton(buttonX, buttonY);
-//
-//            event.addListener(button);
-//        }
-//    }
 }

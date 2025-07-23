@@ -1,24 +1,24 @@
 package com.meteorite.mod.portableInventory.screen;
 
 import com.meteorite.mod.portableInventory.PortableInventoryMod;
+import com.meteorite.mod.portableInventory.client.BackButton;
 import com.meteorite.mod.portableInventory.menu.PortableInventoryMenu;
-import com.meteorite.mod.portableInventory.network.BackGuiPacket;
-import com.meteorite.mod.portableInventory.network.NetworkHandler;
-import com.meteorite.mod.portableInventory.network.OpenScreenPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 public class PortableInventoryScreen extends AbstractContainerScreen<PortableInventoryMenu> {
     public static final ResourceLocation PORTABLE_INVENTORY_CAP = new ResourceLocation(PortableInventoryMod.MODID, "textures/gui/background.png");
+
+    private double mouseX, mouseY;
+    private boolean shouldPreserveMouse = false;
 
     public PortableInventoryScreen(PortableInventoryMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
@@ -30,7 +30,7 @@ public class PortableInventoryScreen extends AbstractContainerScreen<PortableInv
     @Override
     protected void init(){
         super.init();
-        this.addRenderableWidget(new BackButton(this.getGuiLeft() + 128,this.height / 2 - 22, null));
+        this.addRenderableWidget(new BackButton(this.getGuiLeft() + 128,this.height / 2 - 22 , null));
     }
 
     @Override
@@ -62,61 +62,57 @@ public class PortableInventoryScreen extends AbstractContainerScreen<PortableInv
         this.renderTooltip(graphics, mouseX, mouseY);
     }
 
+    //重写关闭GUI方法，此屏幕关闭后一定会返回玩家物品栏
     @Override
     public void onClose() {
+        saveMousePosition();
         super.onClose();
+        scheduleInventoryOpen();
     }
 
-    // 内部返回按钮类
-    private class BackButton extends ImageButton {
-        private static final ResourceLocation BUTTON_TEXTURE =
-                new ResourceLocation(PortableInventoryMod.MODID, "textures/gui/back_button.png");
-
-        private final PortableInventoryScreen parent;
-        private static final int BUTTON_WIDTH = 20;
-        private static final int BUTTON_HEIGHT = 18;
-        private static final int TEXTURE_WIDTH = 256;
-        private static final int TEXTURE_HEIGHT = 256;
-        private static final int NORMAL_U = 0;
-        private static final int NORMAL_V = 0;
-        private static final int HOVER_U = 0;
-        private static final int HOVER_V = 19;
-
-        public BackButton(int x, int y, @Nullable PortableInventoryScreen parent) {
-            super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT,
-                    NORMAL_U, NORMAL_V, HOVER_V - NORMAL_V,
-                    BUTTON_TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT,button -> {
-                        Minecraft mc = Minecraft.getInstance();
-                        if (parent != null) {
-                            mc.setScreen(parent);
-                        } else if (mc.player != null) {
-                            mc.setScreen(new InventoryScreen(mc.player));
-                        }
-                    });
-            this.parent = parent;
+    // 保存当前鼠标位置
+    private void saveMousePosition() {
+        if (minecraft != null ) {
+            mouseX = minecraft.mouseHandler.xpos();
+            mouseY = minecraft.mouseHandler.ypos();
+            shouldPreserveMouse = true;
         }
-        // 绘制按钮
-        @Override
-        public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    }
 
-            if (this.visible) {
-                int u = this.isHoveredOrFocused() ? HOVER_U : NORMAL_U;
-                int v = this.isHoveredOrFocused() ? HOVER_V : NORMAL_V;
-                guiGraphics.blit(BUTTON_TEXTURE, this.getX(), this.getY(), u, v, BUTTON_WIDTH, BUTTON_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-                if (this.isHovered) {
-                    this.renderTooltip(guiGraphics, mouseX, mouseY);
+    // 关闭屏幕后延迟打开玩家背包
+    private void scheduleInventoryOpen() {
+        if (minecraft != null) {
+            minecraft.execute(() -> {
+                if (minecraft.player != null) {
+                    InventoryScreen inventoryScreen = new InventoryScreen(minecraft.player);
+                    minecraft.setScreen(inventoryScreen);
+
+                    // 恢复鼠标位置
+                    restoreMousePosition();
                 }
+            });
+        }
+    }
+
+    // 恢复鼠标位置
+    private void restoreMousePosition() {
+        if (shouldPreserveMouse) {
+            if (minecraft != null) {
+                minecraft.execute(() -> {
+                    try {
+                        GLFW.glfwSetCursorPos(minecraft.getWindow().getWindow(), mouseX, mouseY);
+                    } catch (Exception e) {
+                        // 无效果
+                    } finally {
+                        shouldPreserveMouse = false;
+                    }
+                });
             }
         }
+    }
 
-        public void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-            if (this.visible && this.isHovered) {
-                guiGraphics.renderTooltip(Minecraft.getInstance().font,
-                        Component.translatable("gui.button.back.tooltip"),
-                        mouseX, mouseY);
-            }
-        }
-
+    public void closeAndReturnToInventory() {
+        this.onClose();
     }
 
 }

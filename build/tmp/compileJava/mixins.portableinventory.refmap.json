@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "com/meteorite/mod/portableInventory/mixin/InventoryScreenMixin": {
+      "init": "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;m_7856_()V",
+      "containerTick": "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;m_181908_()V"
+    }
+  },
+  "data": {
+    "searge": {
+      "com/meteorite/mod/portableInventory/mixin/InventoryScreenMixin": {
+        "init": "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;m_7856_()V",
+        "containerTick": "Lnet/minecraft/client/gui/screens/inventory/InventoryScreen;m_181908_()V"
+      }
+    }
+  }
+}
