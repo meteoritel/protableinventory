@@ -21,14 +21,12 @@ public class PortableInventoryMod {
 
     public PortableInventoryMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        // 注册菜单
+        /*
+        *  注册
+        */
         MenuInit.MENUS.register(modEventBus);
-
-        // 注册事件监听器
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
-
         MinecraftForge.EVENT_BUS.register(new InventoryCapabilityHandler());
     }
     private void commonSetup(FMLCommonSetupEvent event) {

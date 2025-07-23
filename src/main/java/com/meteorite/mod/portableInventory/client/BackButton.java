@@ -15,7 +15,7 @@ public class BackButton extends ImageButton {
     private static final ResourceLocation BUTTON_TEXTURE =
             new ResourceLocation(PortableInventoryMod.MODID, "textures/gui/back_button.png");
 
-    private final PortableInventoryScreen parent;
+
     private static final int BUTTON_WIDTH = 20;
     private static final int BUTTON_HEIGHT = 18;
     private static final int TEXTURE_WIDTH = 256;
@@ -25,18 +25,18 @@ public class BackButton extends ImageButton {
     private static final int HOVER_U = 0;
     private static final int HOVER_V = 19;
 
-    public BackButton(int x, int y, PortableInventoryScreen parent) {
+    public BackButton(int x, int y) {
         super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT,
                 NORMAL_U, NORMAL_V, HOVER_V - NORMAL_V,
                 BUTTON_TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT,button -> {
                     Screen currentScreen = Minecraft.getInstance().screen;
                     if (currentScreen instanceof PortableInventoryScreen) {
-                        // 退出直接返回玩家物品栏
+                        // 退出返回玩家物品栏
                         ((PortableInventoryScreen) currentScreen).closeAndReturnToInventory();
                     }
                 });
         // parent变量暂无作用
-        this.parent = parent;
+
     }
     // 绘制按钮
     @Override
@@ -59,5 +59,4 @@ public class BackButton extends ImageButton {
                     mouseX, mouseY);
         }
     }
-
 }

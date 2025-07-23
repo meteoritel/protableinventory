@@ -193,9 +193,7 @@ Writing Output: D:\system_default\desktop\java_project\PortableInventory\build\r
   com/meteorite/mod/portableInventory/mixin/InventoryScreenAccessor.class
   com/meteorite/mod/portableInventory/mixin/InventoryScreenMixin.class
   com/meteorite/mod/portableInventory/network/
-  com/meteorite/mod/portableInventory/network/CloseScreenPacket.class
   com/meteorite/mod/portableInventory/network/NetworkHandler.class
-  com/meteorite/mod/portableInventory/network/OpenInventoryScreenClientPacket.class
   com/meteorite/mod/portableInventory/network/OpenScreenPacket.class
   com/meteorite/mod/portableInventory/screen/
   com/meteorite/mod/portableInventory/screen/PortableInventoryScreen.class

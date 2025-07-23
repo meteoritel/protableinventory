@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +29,7 @@ public class PortableInventoryScreen extends AbstractContainerScreen<PortableInv
     @Override
     protected void init(){
         super.init();
-        this.addRenderableWidget(new BackButton(this.getGuiLeft() + 128,this.height / 2 - 22 , null));
+        this.addRenderableWidget(new BackButton(this.getGuiLeft() + 128,this.height / 2 - 22 ));
     }
 
     @Override
@@ -86,8 +85,6 @@ public class PortableInventoryScreen extends AbstractContainerScreen<PortableInv
                 if (minecraft.player != null) {
                     InventoryScreen inventoryScreen = new InventoryScreen(minecraft.player);
                     minecraft.setScreen(inventoryScreen);
-
-                    // 恢复鼠标位置
                     restoreMousePosition();
                 }
             });
@@ -102,7 +99,7 @@ public class PortableInventoryScreen extends AbstractContainerScreen<PortableInv
                     try {
                         GLFW.glfwSetCursorPos(minecraft.getWindow().getWindow(), mouseX, mouseY);
                     } catch (Exception e) {
-                        // 无效果
+                        //
                     } finally {
                         shouldPreserveMouse = false;
                     }
