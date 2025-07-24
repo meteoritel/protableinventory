@@ -12,4 +12,6 @@ build
 # other
 eclipse
 run
+runs
+run-data
 logs/
