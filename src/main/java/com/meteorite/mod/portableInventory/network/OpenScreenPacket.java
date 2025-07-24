@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
-
 import java.util.function.Supplier;
 
 public class OpenScreenPacket {
@@ -21,9 +20,7 @@ public class OpenScreenPacket {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
             if (player != null) {
-                // 刷新物品栏菜单
                 player.initInventoryMenu();
-                // 服务端打开菜单
                 NetworkHooks.openScreen(player, new SimpleMenuProvider(
                         (id, inventory, p) -> new PortableInventoryMenu(id, inventory),
                         Component.translatable("gui.portableinventory.title")

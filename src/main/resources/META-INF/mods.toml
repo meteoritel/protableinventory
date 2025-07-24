@@ -7,7 +7,7 @@ license = "MIT"
 modId = "portableinventory" #mandatory
 version = "1.0.0" #mandatory
 displayName = "Portable Inventory" #mandatory
-authors = "Meteorite" #optional
+authors = "Meteorite_l" #optional
 description = "A simple inventory for you"
 
 [[dependencies."portableinventory"]] #optional

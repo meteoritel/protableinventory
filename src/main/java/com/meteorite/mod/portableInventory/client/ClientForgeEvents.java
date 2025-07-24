@@ -4,6 +4,7 @@ import com.meteorite.mod.portableInventory.PortableInventoryMod;
 import com.meteorite.mod.portableInventory.network.NetworkHandler;
 import com.meteorite.mod.portableInventory.network.OpenScreenPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -24,8 +25,8 @@ public class ClientForgeEvents {
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
-        // 检查玩家存在和是否已经打开了gui
-        if (mc.player == null && mc.screen != null) return;
+
+        if (mc.player == null && !(mc.screen instanceof InventoryScreen)) return;
 
         if(event.getAction() == GLFW.GLFW_PRESS ) {
             if(event.getKey() == Keys.openKey.getKey().getValue() && Keys.openKey.consumeClick()) {
