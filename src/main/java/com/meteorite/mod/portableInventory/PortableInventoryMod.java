@@ -10,7 +10,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -28,6 +30,12 @@ public class PortableInventoryMod {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
         MinecraftForge.EVENT_BUS.register(new InventoryCapabilityHandler());
+
+        ModLoadingContext.get().registerConfig(
+                ModConfig.Type.COMMON,
+                Config.SPEC,
+                "portable-inventory.toml"
+        );
     }
     private void commonSetup(FMLCommonSetupEvent event) {
         // 初始化网络

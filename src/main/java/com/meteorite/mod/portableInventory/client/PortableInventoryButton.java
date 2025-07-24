@@ -1,5 +1,6 @@
 package com.meteorite.mod.portableInventory.client;
 
+import com.meteorite.mod.portableInventory.Config;
 import com.meteorite.mod.portableInventory.PortableInventoryMod;
 import com.meteorite.mod.portableInventory.network.NetworkHandler;
 import com.meteorite.mod.portableInventory.network.OpenScreenPacket;
@@ -31,7 +32,7 @@ public class PortableInventoryButton extends ImageButton {
                     NetworkHandler.CHANNEL.sendToServer(new OpenScreenPacket());
                 }
         );
-        this.visible = true;
+        this.visible = Config.getButtonVisible();
     }
 
     // 绘制按钮

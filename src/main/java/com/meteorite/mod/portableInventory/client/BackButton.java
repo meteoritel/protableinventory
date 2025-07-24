@@ -15,7 +15,6 @@ public class BackButton extends ImageButton {
     private static final ResourceLocation BUTTON_TEXTURE =
             new ResourceLocation(PortableInventoryMod.MODID, "textures/gui/back_button.png");
 
-
     private static final int BUTTON_WIDTH = 20;
     private static final int BUTTON_HEIGHT = 18;
     private static final int TEXTURE_WIDTH = 256;
@@ -35,8 +34,7 @@ public class BackButton extends ImageButton {
                         ((PortableInventoryScreen) currentScreen).closeAndReturnToInventory();
                     }
                 });
-        // parent变量暂无作用
-
+        this.visible = true;
     }
     // 绘制按钮
     @Override
