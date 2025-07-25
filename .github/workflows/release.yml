@@ -1,9 +1,197 @@
 name: Release
 
-#on:
-#  push:
-#    tags:
-#      - "v*.*.*"
-#      - "v*.*.*-*"
-#
-#  workflow_dispatch:
+on:
+  push:
+    tags:
+      - "v*"
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Mark as pre-release'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史，用于生成更新日志
+
+      # 2. 设置 Java 环境
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 3. 缓存 Gradle
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # 4. 赋予执行权限
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # 5. 构建项目
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      # 6. 运行测试
+      - name: Run tests
+        run: ./gradlew test --no-daemon
+
+      # 7. 获取版本信息
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION_NO_V=${VERSION#v}" >> $GITHUB_OUTPUT
+          
+          # 判断是否为预发布版本
+          if [[ "$VERSION" =~ -[a-zA-Z] ]]; then
+            echo "PRERELEASE=true" >> $GITHUB_OUTPUT
+          else
+            echo "PRERELEASE=false" >> $GITHUB_OUTPUT
+          fi
+
+      # 8. 生成更新日志
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # 获取上一个标签
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # 如果没有上一个标签，获取所有提交
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            # 获取两个标签之间的提交
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges $PREVIOUS_TAG..HEAD)
+          fi
+          
+          # 处理换行符并保存到输出
+          {
+            echo "CHANGELOG<<EOF"
+            echo "$CHANGELOG"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      # 9. 查找构建产物
+      - name: Find JAR files
+        id: find_jars
+        run: |
+          # 查找主要的 JAR 文件（排除 sources 和 javadoc）
+          MAIN_JAR=$(find build/libs -name "*.jar" -not -name "*-sources.jar" -not -name "*-javadoc.jar" -not -name "*-dev.jar" | head -1)
+          
+          if [ -z "$MAIN_JAR" ]; then
+            echo "Error: No main JAR file found!"
+            exit 1
+          fi
+          
+          echo "MAIN_JAR=$MAIN_JAR" >> $GITHUB_OUTPUT
+          echo "MAIN_JAR_NAME=$(basename $MAIN_JAR)" >> $GITHUB_OUTPUT
+          
+          # 查找所有相关文件
+          ALL_JARS=$(find build/libs -name "*.jar" | tr '\n' ' ')
+          echo "ALL_JARS=$ALL_JARS" >> $GITHUB_OUTPUT
+
+      # 10. 创建 GitHub Release
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          release_name: 'Release ${{ steps.version.outputs.VERSION }}'
+          body: |
+            ## 🚀 What's New in ${{ steps.version.outputs.VERSION }}
+            
+            ### 📋 Changes
+            ${{ steps.changelog.outputs.CHANGELOG }}
+            
+            ### 📦 Installation
+            1. Download the JAR file from the assets below
+            2. Place it in your Minecraft `mods` folder
+            3. Make sure you have Minecraft Forge 1.20.1 installed
+            
+            ### ⚙️ Requirements
+            - Minecraft 1.20.1
+            - Minecraft Forge 47.2.0 or later
+            - Java 17 or later
+            
+            ### 🐛 Known Issues
+            - Please report any issues on our [GitHub Issues](https://github.com/${{ github.repository }}/issues) page
+            
+            ---
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.event.before }}...${{ steps.version.outputs.VERSION }}
+          draft: false
+          prerelease: ${{ steps.version.outputs.PRERELEASE == 'true' || github.event.inputs.prerelease == 'true' }}
+
+      # 11. 上传主要 JAR 文件
+      - name: Upload Main JAR
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.find_jars.outputs.MAIN_JAR }}
+          asset_name: ${{ steps.find_jars.outputs.MAIN_JAR_NAME }}
+          asset_content_type: application/java-archive
+
+      # 12. 上传 Sources JAR（如果存在）
+      - name: Upload Sources JAR
+        continue-on-error: true
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/libs/${{ github.event.repository.name }}-${{ steps.version.outputs.VERSION_NO_V }}-sources.jar
+          asset_name: ${{ github.event.repository.name }}-${{ steps.version.outputs.VERSION_NO_V }}-sources.jar
+          asset_content_type: application/java-archive
+
+      # 13. 上传 Javadoc JAR（如果存在）
+      - name: Upload Javadoc JAR
+        continue-on-error: true
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/libs/${{ github.event.repository.name }}-${{ steps.version.outputs.VERSION_NO_V }}-javadoc.jar
+          asset_name: ${{ github.event.repository.name }}-${{ steps.version.outputs.VERSION_NO_V }}-javadoc.jar
+          asset_content_type: application/java-archive
+
+      # 14. 通知构建完成
+      - name: Release Summary
+        run: |
+          echo "✅ Release ${{ steps.version.outputs.VERSION }} created successfully!"
+          echo "📦 Main JAR: ${{ steps.find_jars.outputs.MAIN_JAR_NAME }}"
+          echo "🔗 Release URL: ${{ steps.create_release.outputs.html_url }}"

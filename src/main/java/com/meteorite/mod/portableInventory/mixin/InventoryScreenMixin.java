@@ -1,5 +1,6 @@
 package com.meteorite.mod.portableInventory.mixin;
 
+import com.meteorite.mod.portableInventory.Config;
 import com.meteorite.mod.portableInventory.client.PortableInventoryButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -26,12 +27,12 @@ public abstract class InventoryScreenMixin extends Screen {
 
     @Unique
     private int getButtonX(InventoryScreen screen) {
-        return screen.getGuiLeft() + 104 + 24;
+        return screen.getGuiLeft() + Config.getButtonXOffset();
     }
 
     @Unique
     private int getButtonY(InventoryScreen screen) {
-        return screen.height / 2 - 22;
+        return screen.height / 2 + Config.getButtonYOffset();
     }
 
     @Inject(method = "init", at = @At("TAIL"))
@@ -40,18 +41,14 @@ public abstract class InventoryScreenMixin extends Screen {
 
         int x = getButtonX(screen);
         int y = getButtonY(screen);
-        // 每次刷新都移除旧按钮，添加新按钮
+
         if (modButton != null) {
             this.removeWidget(modButton);
         }
 
         modButton = new PortableInventoryButton(x,y);
         this.addRenderableWidget(modButton);
-//        if (modButton == null) {
-//
-//        } else {
-//            modButton.setPosition(x,y);
-//        }
+
     }
 
     @Inject(method = "containerTick", at = @At("TAIL"))

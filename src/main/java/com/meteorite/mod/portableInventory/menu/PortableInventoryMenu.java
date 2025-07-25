@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PortableInventoryMenu extends AbstractContainerMenu {
 
-    //private final ContainerLevelAccess access;
+    private final ContainerLevelAccess access;
     private final Player player;
 
     public PortableInventoryMenu(int id, Inventory playerInventory) {
@@ -22,7 +22,7 @@ public class PortableInventoryMenu extends AbstractContainerMenu {
     public PortableInventoryMenu(int id, Inventory playerInventory, ContainerLevelAccess access) {
         super(MenuInit.PORTABLE_INVENTORY_MENU.get(), id);
         this.player = playerInventory.player;
-        //this.access = access;
+        this.access = access;
 
         IPortableHandler portableInventory = player.getCapability(InventoryCapabilityProvider.PORTABLE_INVENTORY_CAP).
                 orElseThrow(() -> new IllegalStateException("ERROR, NO PORTABLE INVENTORY!"));
