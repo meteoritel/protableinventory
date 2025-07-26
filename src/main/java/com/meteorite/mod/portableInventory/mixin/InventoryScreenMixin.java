@@ -27,12 +27,12 @@ public abstract class InventoryScreenMixin extends Screen {
 
     @Unique
     private int getButtonX(InventoryScreen screen) {
-        return screen.getGuiLeft() + Config.getButtonXOffset();
+        return screen.getGuiLeft() + 128;
     }
 
     @Unique
     private int getButtonY(InventoryScreen screen) {
-        return screen.height / 2 + Config.getButtonYOffset();
+        return screen.height / 2 - 22;
     }
 
     @Inject(method = "init", at = @At("TAIL"))
